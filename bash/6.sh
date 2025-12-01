@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -euo pipefail
 old_files=$(ls -A)
 
