@@ -20,4 +20,4 @@ jobs:
           podman stop --all
           podman rm --all -f
           podman-compose down
-          podman-compose up -d --build
+          podman-compose -p docker up -d --build
