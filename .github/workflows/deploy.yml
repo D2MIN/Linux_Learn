@@ -15,8 +15,10 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          cd docker
           export XDG_RUNTIME_DIR=/run/user/$(id -u)
+          cd docker
+          podman ps -q --filter "publish=8074" | xargs -r podman rm -f
+
           podman stop --all
           podman rm --all -f
           podman-compose down
