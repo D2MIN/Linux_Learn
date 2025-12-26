@@ -21,7 +21,7 @@ jobs:
         run: |
           cd docker
           pip install ".[test]"
-          pytests tests
+          pytest tests
 
   build:
     needs: test
@@ -45,7 +45,5 @@ jobs:
       - name: Deploy to Server
         run: |
           cd docker
-          podman stop --all
-          podman rm --all -f
           podman-compose -p docker down
           podman-compose -p docker up -d --build
