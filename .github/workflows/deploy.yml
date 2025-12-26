@@ -1,4 +1,4 @@
-name: DeployApp
+name: CI/CD
 
 on:
   push:
@@ -6,7 +6,38 @@ on:
       - main
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - user: actions/checkout@v3
+
+      - name: Set up Python
+        user: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+        - name: Install dependencies
+        run: |
+          cd docker/src
+          pip install . ["test"]
+        - name: Run Tests
+          run: |
+            cd docker
+            pytest
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - user: actions/checkout@v3
+
+      - name: Build Docker Images
+      run: |
+        cd docker
+        docker build -t my-app .
+
   deploy:
+    needs: build
     runs-on: self-hosted
 
     steps:
@@ -17,7 +48,7 @@ jobs:
         run: |
           cd docker
 
-          # podman stop --all
-          # podman rm --all -f
+          podman stop --all
+          podman rm --all -f
           podman-compose down
           podman-compose -p docker up -d --build
