@@ -19,6 +19,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
+          port: 58529
           script: |
             cd ~/tasks
             git pull origin main
