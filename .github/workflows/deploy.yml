@@ -9,7 +9,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - user: actions/checkout@v3
+      - name: Checkout code
+        user: actions
       - name: Set up Python
         user: actions/setup-python@v4
         with:
