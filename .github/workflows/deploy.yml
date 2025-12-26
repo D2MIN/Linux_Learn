@@ -16,5 +16,6 @@ jobs:
       - name: Deploy to Server
         run: |
           cd docker
+          export XDG_RUNTIME_DIR=/run/user/$(id -u)
           podman-compose down
           podman-compose up -d --build
