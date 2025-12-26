@@ -8,6 +8,15 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: kubsu
+          POSTGRES_PASSWORD: kubsu
+          POSTGRES_DB: kubsu
+        ports:
+          - 5432:5432
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,6 +30,7 @@ jobs:
         run: |
           cd docker
           pip install ".[test]"
+          export DATABASE_URL=postgresql+psycopg://kubsu:kubsu@127.0.0.1:5432/kubsu
           export PYTHONPATH=$PYTHONPATH:$(pwd)
           pytest tests
 
