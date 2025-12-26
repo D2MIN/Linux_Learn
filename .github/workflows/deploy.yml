@@ -18,4 +18,6 @@ jobs:
           cd docker
           export XDG_RUNTIME_DIR=/run/user/$(id -u)
           podman-compose down
+          podman stop --all
+          podman rm -all -f
           podman-compose up -d --build
