@@ -1,4 +1,4 @@
-name: CI/CD
+name: CI/CD Pipeline
 
 on:
   push:
@@ -6,10 +6,37 @@ on:
       - main
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Run simple check
+        run: |
+          pip install ".[test]"
+          pytests tests
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: |
+          cd docker
+          docker build -t myapp-test .
+
   deploy:
     needs: build
     runs-on: self-hosted
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -17,8 +44,7 @@ jobs:
       - name: Deploy to Server
         run: |
           cd docker
-
           podman stop --all
           podman rm --all -f
-          podman-compose down
+          podman-compose -p docker down
           podman-compose -p docker up -d --build
