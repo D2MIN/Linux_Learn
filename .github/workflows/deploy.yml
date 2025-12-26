@@ -21,6 +21,7 @@ jobs:
         run: |
           cd docker
           pip install ".[test]"
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
           pytest tests
 
   build:
