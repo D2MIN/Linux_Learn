@@ -57,4 +57,5 @@ jobs:
         run: |
           cd docker
           podman-compose down
+          podman rm -f -a
           podman-compose up -d --build
