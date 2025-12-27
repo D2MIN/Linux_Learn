@@ -49,7 +49,6 @@ jobs:
   deploy:
     needs: build
     runs-on: self-hosted
-    network_mode: slirp4netns:port_handler=proxy
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
