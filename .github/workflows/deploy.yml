@@ -57,7 +57,8 @@ jobs:
         run: |
           git pull
           cd docker/
-          killall -u liskov -9 rootlessport
-          podman-compose down
           podman rm -f -a
-          podman-compose up -d --build
+          podman-compose up -d
+          podman run -d --name debug_app -p 127.0.0.1:8074:8000 docker_app
+
+          podman inspect debug_app
