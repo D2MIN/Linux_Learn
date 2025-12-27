@@ -55,9 +55,17 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          export XDG_RUNTIME_DIR=/run/user/$(id -u)
-
           cd docker/
+
+          # Определяем ID пользователя и путь к рантайму
+          export USER_ID=$(id -u)
+          export XDG_RUNTIME_DIR=/run/user/$USER_ID
+
+          # Проверяем, существует ли папка. Если нет — используем домашнюю директорию
+          if [ ! -d "$XDG_RUNTIME_DIR" ]; then
+            export XDG_RUNTIME_DIR=$HOME/.podman-runtime
+            mkdir -p $XDG_RUNTIME_DIR
+          fi
 
           podman-compose down
           podman rm -f -a
