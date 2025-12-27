@@ -55,6 +55,17 @@ jobs:
 
       - name: Deploy to Server
         run: |
+          # 1. Срочно инициализируем рантайм пользователя
+          export XDG_RUNTIME_DIR=/run/user/$(id -u)
+          # 2. Проверяем, запущен ли сервис подмана для этого пользователя
+          systemctl --user enable --now podman.socket || true
           cd docker
-          podman-compose -p docker down
+          # 3. Полная очистка
+          podman-compose -p docker down || true
+          podman rm -f docker_app_1 docker_db_1 || true
+          # 4. Запуск с явным указанием хоста
           podman-compose -p docker up -d --build
+          # 5. ДАЕМ ВРЕМЯ И ПРОВЕРЯЕМ
+          sleep 10
+          podman ps
+          ss -tulpn | grep 8074 || echo "ПОРТ ВСЕ ЕЩЕ НЕ СЛУШАЕТСЯ!"
