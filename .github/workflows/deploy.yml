@@ -55,10 +55,9 @@ jobs:
 
       - name: Deploy to Server
         run: |
+          export XDG_RUNTIME_DIR=/run/user/$(id -u)
           git pull
           cd docker/
+
           podman rm -f -a
           podman-compose up -d
-          podman run -d --name debug_app -p 127.0.0.1:8074:8000 docker_app
-
-          podman inspect debug_app
