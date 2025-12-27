@@ -55,7 +55,9 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          cd ../../../../docker/
+          git pull
+          cd docker/
+          killall -u liskov -9 rootlessport
           podman-compose down
           podman rm -f -a
           podman-compose up -d --build
