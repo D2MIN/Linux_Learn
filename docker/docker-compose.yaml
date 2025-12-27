@@ -17,7 +17,7 @@ services:
   app:
     build: .
     ports:
-      - "8074:8000"
+      - "127.0.0.1:8074:8000"
     depends_on:
       - db
     environment:
