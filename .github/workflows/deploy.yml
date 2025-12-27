@@ -59,7 +59,3 @@ jobs:
           podman-compose down
           podman rm -f -a
           podman-compose up -d --build
-
-          sleep 2
-          echo "Checking ports..."
-          ss -tulpn | grep 8074 || echo "PORT 8074 IS NOT LISTENED!"
