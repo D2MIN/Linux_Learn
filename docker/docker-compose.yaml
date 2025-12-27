@@ -16,8 +16,8 @@ services:
 
   app:
     build: .
-    # ports: - "127.0.0.1:8074:8000"
-    network_mode: "host"
+    ports:
+      - "127.0.0.1:8074:8000"
     depends_on:
       - db
     environment:
